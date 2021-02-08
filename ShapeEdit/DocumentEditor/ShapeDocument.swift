@@ -132,7 +132,7 @@ class ShapeDocument: UIDocument {
         return try PropertyListSerialization.data(fromPropertyList: plist, format: .binary, options: 0)
     }
 
-    override func fileAttributesToWrite(to url: URL, for saveOperation: UIDocumentSaveOperation) throws -> [AnyHashable: Any] {
+    override func fileAttributesToWrite(to url: URL, for saveOperation: UIDocument.SaveOperation) throws -> [AnyHashable: Any] {
         let aspectRatio = 220.0 / 270.0
 
         let thumbnailSize = CGSize(width: CGFloat(1024.0 * aspectRatio), height: 1024.0)

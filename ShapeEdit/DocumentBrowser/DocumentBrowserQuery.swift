@@ -155,7 +155,7 @@ class DocumentBrowserQuery: NSObject {
            should be run to morph old into new results.
         */
         
-        let oldResultAnimations: [DocumentBrowserAnimation] = removedResults.array.flatMap { removedResult in
+        let oldResultAnimations: [DocumentBrowserAnimation] = removedResults.array.compactMap { removedResult in
             let oldIndex = oldResults.index(of: removedResult)
             
             guard oldIndex != NSNotFound else { return nil }
@@ -163,7 +163,7 @@ class DocumentBrowserQuery: NSObject {
             return .delete(index: oldIndex)
         }
         
-        let newResultAnimations: [DocumentBrowserAnimation] = addedResults.array.flatMap { addedResult in
+        let newResultAnimations: [DocumentBrowserAnimation] = addedResults.array.compactMap { addedResult in
             let newIndex = newResults.index(of: addedResult)
             
             guard newIndex != NSNotFound else { return nil }
@@ -171,7 +171,7 @@ class DocumentBrowserQuery: NSObject {
             return .add(index: newIndex)
         }
 
-        let movedResultAnimations: [DocumentBrowserAnimation] = changedResults.array.flatMap { movedResult in
+        let movedResultAnimations: [DocumentBrowserAnimation] = changedResults.array.compactMap { movedResult in
             let newIndex = newResults.index(of: movedResult)
             let oldIndex = oldResults.index(of: movedResult)
             
@@ -183,7 +183,7 @@ class DocumentBrowserQuery: NSObject {
         }
 
         // Find all the changed result animations.
-        let changedResultAnimations: [DocumentBrowserAnimation] = changedResults.array.flatMap { changedResult in
+        let changedResultAnimations: [DocumentBrowserAnimation] = changedResults.array.compactMap { changedResult in
             let index = newResults.index(of: changedResult)
 
             guard index != NSNotFound else { return nil }

@@ -122,7 +122,7 @@ class ThumbnailCache {
     
     func cancelThumbnailLoadForURL(_ URL: Foundation.URL) {
         if let documentIdentifier = documentIdentifierForURL(URL) {
-            if let index = unscheduledDocumentIDs.index(of: documentIdentifier) {
+            if let index = unscheduledDocumentIDs.firstIndex(of: documentIdentifier) {
                 unscheduledDocumentIDs.remove(at: index)
                 
                 pendingThumbnails[documentIdentifier] = nil
@@ -151,7 +151,7 @@ class ThumbnailCache {
         while self.runningDocumentIDCount < ThumbnailCache.concurrentThumbnailOperations {
             guard let nextDocumentID = self.unscheduledDocumentIDs.first else { break }
             
-            let index = self.unscheduledDocumentIDs.index(of: nextDocumentID)!
+            let index = self.unscheduledDocumentIDs.firstIndex(of: nextDocumentID)!
             self.unscheduledDocumentIDs.remove(at: index)
             
             self.runningDocumentIDCount += 1

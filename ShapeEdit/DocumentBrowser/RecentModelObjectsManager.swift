@@ -74,7 +74,7 @@ class RecentModelObjectsManager: RecentModelObjectDelegate {
                 return
             }
             
-            let loadedRecents = loadedRecentData.flatMap { recentModelObjectData in
+            let loadedRecents = loadedRecentData.compactMap { recentModelObjectData in
                 return NSKeyedUnarchiver.unarchiveObject(with: recentModelObjectData) as? RecentModelObject
             }
             
@@ -126,7 +126,7 @@ class RecentModelObjectsManager: RecentModelObjectDelegate {
             Remove the recent from the array and save the recents array to disk
             so they will reflect the correct state when the app is relaunched.
         */
-        guard let index = recentModelObjects.index(of: recent) else { return }
+        guard let index = recentModelObjects.firstIndex(of: recent) else { return }
 
         recentModelObjects.remove(at: index)
 
@@ -140,7 +140,7 @@ class RecentModelObjectsManager: RecentModelObjectDelegate {
 
             var animations = [DocumentBrowserAnimation]()
             
-            if let index = self.recentModelObjects.index(of: recent) {
+            if let index = self.recentModelObjects.firstIndex(of: recent) {
                 self.recentModelObjects.remove(at: index)
                 
                 if index != 0 {
@@ -176,7 +176,7 @@ class RecentModelObjectsManager: RecentModelObjectDelegate {
     
     func recentWasDeleted(_ recent: RecentModelObject) {
         self.workerQueue.addOperation {
-            guard let index = self.recentModelObjects.index(of: recent) else { return }
+            guard let index = self.recentModelObjects.firstIndex(of: recent) else { return }
             
             self.removeRecentModelObject(recent)
             
@@ -190,7 +190,7 @@ class RecentModelObjectsManager: RecentModelObjectDelegate {
     
     func recentNeedsReload(_ recent: RecentModelObject) {
         self.workerQueue.addOperation {
-            guard let index = self.recentModelObjects.index(of: recent) else { return }
+            guard let index = self.recentModelObjects.firstIndex(of: recent) else { return }
             
             OperationQueue.main.addOperation {
                 self.delegate?.recentsManagerResultsDidChange(self.recentModelObjects, animations: [

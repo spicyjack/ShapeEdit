@@ -48,12 +48,12 @@ class DocumentViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        shapeSelector.selectedSegmentIndex = UISegmentedControlNoSegment
+        shapeSelector.selectedSegmentIndex = UISegmentedControl.noSegment
         shapeSelector.isUserInteractionEnabled = false
         
         progressView.isHidden = false
         
-        documentObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIDocumentStateChanged, object: document, queue: nil) { _ in
+        documentObserver = NotificationCenter.default.addObserver(forName: UIDocument.stateChangedNotification, object: document, queue: nil) { _ in
             if self.document.documentState.contains(.progressAvailable) {
                 self.progressView.observedProgress = self.document.progress
             }
@@ -135,7 +135,7 @@ class DocumentViewController: UIViewController {
             shapeSelector.isUserInteractionEnabled = true
         }
         else {
-            shapeSelector.selectedSegmentIndex = UISegmentedControlNoSegment
+            shapeSelector.selectedSegmentIndex = UISegmentedControl.noSegment
         }
         
         shapeSelector.tintColor = segmentedControllerTintColor

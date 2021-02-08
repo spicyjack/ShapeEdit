@@ -193,14 +193,14 @@ class DocumentBrowserController: UICollectionViewController, DocumentBrowserQuer
     // MARK: - ThumbnailCacheDelegateType
     
     func thumbnailCache(_ thumbnailCache: ThumbnailCache, didLoadThumbnailsForURLs URLs: Set<URL>) {
-        let documentPaths: [IndexPath] = URLs.flatMap { url in
-            guard let matchingDocumentIndex = documents.index(where: { $0.url as URL == url }) else { return nil }
+        let documentPaths: [IndexPath] = URLs.compactMap { url in
+            guard let matchingDocumentIndex = documents.firstIndex(where: { $0.url as URL == url }) else { return nil }
             
             return IndexPath(item: matchingDocumentIndex, section: DocumentBrowserController.documentsSection)
         }
         
-        let recentPaths: [IndexPath] = URLs.flatMap { url in
-            guard let matchingRecentIndex = recents.index(where: { $0.url as URL == url }) else { return nil }
+        let recentPaths: [IndexPath] = URLs.compactMap { url in
+            guard let matchingRecentIndex = recents.firstIndex(where: { $0.url as URL == url }) else { return nil }
             
             return IndexPath(item: matchingRecentIndex, section: DocumentBrowserController.recentsSection)
         }
@@ -241,8 +241,8 @@ class DocumentBrowserController: UICollectionViewController, DocumentBrowserQuer
     }
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as! HeaderView
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as! HeaderView
 
             header.title = indexPath.section == DocumentBrowserController.recentsSection ? "Recently Viewed" : "All Shapes"
             
@@ -270,7 +270,7 @@ class DocumentBrowserController: UICollectionViewController, DocumentBrowserQuer
             return nil
         }
         
-        let presentURLs = visibleURLs.flatMap{$0}
+        let presentURLs = visibleURLs.compactMap{$0}
         
         if !presentURLs.contains(document.url) {
             thumbnailCache.cancelThumbnailLoadForURL(document.url)
@@ -281,7 +281,7 @@ class DocumentBrowserController: UICollectionViewController, DocumentBrowserQuer
     // MARK: - Document handling support
         
     fileprivate func documentBrowserModelObjectForURL(_ url: URL) -> DocumentBrowserModelObject? {
-        guard let matchingDocumentIndex = documents.index(where: { $0.url as URL == url }) else { return nil }
+        guard let matchingDocumentIndex = documents.firstIndex(where: { $0.url as URL == url }) else { return nil }
         
         return documents[matchingDocumentIndex]
     }

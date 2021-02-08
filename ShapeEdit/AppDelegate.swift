@@ -16,14 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     // MARK: - UIApplicationDelegate
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         /*
             `options[UIApplicationOpenURLOptionsOpenInPlaceKey]` will be set if 
             the app doesn't need to make a copy of the document to open or edit it.
             For example, the document could be in the ubiquitous container of the
             application.
         */
-        guard let shouldOpenInPlace = options[UIApplicationOpenURLOptionsKey.openInPlace] as? Bool else {
+        guard let shouldOpenInPlace = options[UIApplication.OpenURLOptionsKey.openInPlace] as? Bool else {
             return false
         }
         
